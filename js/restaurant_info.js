@@ -137,6 +137,7 @@ createReviewHTML = (review) => {
   divHead.appendChild(date);
 
   const rating = document.createElement('p');
+  rating.className = 'rating';
   rating.innerHTML = `Rating: ${review.rating}`;
   div.appendChild(rating);
 

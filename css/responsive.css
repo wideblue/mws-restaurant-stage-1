@@ -4,27 +4,43 @@
         flex-wrap: wrap;
       }
 
+    nav h1 a {
+      font-size: 16pt;
+    }
 
     #restaurants-list li {
       display: flex;
       width: calc((100% - 60px)/2);
+      margin: 15px;
     }
 
     #reviews-list li {
-      max-width: 600px;
+      max-width: 700px;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    #reviews-list .rating-card {
+      margin: 0px 20px 20px;
+    }
+
+    #restaurant-container  {
+      margin: 20px;
     }
 
   }
 
   @media screen and (min-width: 1000px) {
+    nav h1 a {
+      font-size: 18pt;
+    }
+
     #restaurants-list li {
       width: calc((100% - 90px)/3);
     }
 
     #reviews-list li {
-      width: calc((100% - 60px)/2);
+      width: calc((100%)/2);
       margin-left: initial;
       margin-right: initial;
     }
