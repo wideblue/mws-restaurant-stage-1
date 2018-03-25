@@ -20,10 +20,10 @@
   </header>
 
   <main id="maincontent">
-    <section id="map-container">
-      <div id="map"></div>
+    <section id="map-container" aria-label="Google map with restaurants locations">
+      <div id="map"  aria-hidden="true"></div>
     </section>
-    <section>
+    <section title="Filter restaurants">
       <div class="filter-options">
         <h2>Filter Results</h2>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
