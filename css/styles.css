@@ -22,7 +22,11 @@ a {
 	text-decoration: none;
 }
 a:hover, a:focus {
-	color: #3397db;
+  box-shadow: 0 0 8px 3px
+  rgba(#01447e);
+  color: #3397db;
+
+
 	text-decoration: none;
 }
 a img{
@@ -139,6 +143,12 @@ nav h1 a {
   width: 200px;
 }
 
+.filter-options select:focus {
+  box-shadow: 0 0 8px 3px
+  rgba(255, 255, 255, 0.8);
+  outline-color: #f18200;
+}
+
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
   background-color: #f3f3f3;
@@ -205,6 +215,7 @@ nav h1 a {
   text-decoration: none;
   text-transform: uppercase;
 }
+
 
 /* ====================== Restaurant Details ====================== */
 .inside header {
