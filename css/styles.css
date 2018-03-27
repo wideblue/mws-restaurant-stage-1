@@ -120,6 +120,12 @@ nav h1 a {
     content: "/\00a0";
 }
 
+.breadcrumb-nav {
+  background-color: inherit;
+  height: inherit;
+  text-align: left;
+}
+
 /* Add a color to all links inside the list */
 #breadcrumb li a {
     color: #0275d8;
