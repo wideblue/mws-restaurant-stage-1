@@ -191,21 +191,19 @@ document.addEventListener('DOMContentLoaded', event => {
 });
 
 // register service worker
-/* if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').then(
-        registration => {
-          // Registration was successful
-          console.log(
-            "ServiceWorker registration successful with scope: ",
-            registration.scope
-          );
-        },
-        err => {
-          // Registration failed :(
-          console.log("ServiceWorker registration failed: ", err);
-        }
-);;
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(registration => {
+        // Registration was successful
+        // eslint-disable-next-line no-console
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      })
+      .catch(err => {
+        // Registration failed :(
+        // eslint-disable-next-line no-console
+        console.log('ServiceWorker registration failed: ', err);
+      });
   });
 }
- */

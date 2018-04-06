@@ -1,10 +1,9 @@
-var staticCacheName = 'restrev-static-v8';
-var contentImgsCache = 'restrev-content-imgs';
-var allCaches = [
-  staticCacheName,
-  contentImgsCache
-];
-self.addEventListener("install", function(event) {
+//NOTE: keeping for reference, service worker implementation pre workbox through webpack
+
+let staticCacheName = 'restrev-static-v8';
+let contentImgsCache = 'restrev-content-imgs';
+let allCaches = [staticCacheName, contentImgsCache];
+self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
@@ -22,22 +21,23 @@ self.addEventListener("install", function(event) {
   );
 });
 
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
-        cacheNames.filter(function(cacheName) {
-          return cacheName.startsWith('restrev-') &&
-                 !allCaches.includes(cacheName);
-        }).map(function(cacheName) {
-          return caches.delete(cacheName);
-        })
+        cacheNames
+          .filter(function(cacheName) {
+            return cacheName.startsWith('restrev-') && !allCaches.includes(cacheName);
+          })
+          .map(function(cacheName) {
+            return caches.delete(cacheName);
+          })
       );
     })
   );
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', event => {
   var requestUrl = new URL(event.request.url);
 
   if (requestUrl.origin === location.origin) {
@@ -62,11 +62,10 @@ self.addEventListener('fetch', function(event) {
   );
 });
 
-
 function servePhoto(request) {
-  var storageUrl = request.url;
+  let storageUrl = request.url;
 
-  return caches.open(contentImgsCache).then(function(cache) {
+  return caches.open(contentImgsCache).then(cache => {
     return cache.match(storageUrl).then(function(response) {
       if (response) return response;
 
