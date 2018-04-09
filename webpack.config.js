@@ -1,8 +1,9 @@
-// const path = require('path');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
   entry: {
@@ -13,14 +14,14 @@ module.exports = {
   output: {
     filename: '[name].bundle.js'
   },
-  /* module: {
-  rules: [
-    {
-      test: /\.html$/,
-      use: [{ loader: "html-loader", options: { minimize: true } }]
-    }
-  ]
-}, */
+  module: {
+    rules: [
+      {
+        test: /\.html$/,
+        use: [{ loader: 'html-loader', options: { minimize: true } }]
+      }
+    ]
+  },
   devServer: {
     contentBase: './dist',
     port: 8000
@@ -49,6 +50,21 @@ module.exports = {
       // { from: './src/sw.js', to: 'sw.js' },
       { from: './src/data/', to: 'data/' }
     ]),
+    new WebpackPwaManifest({
+      name: 'Restaurant Reviews',
+      short_name: 'R Reviews',
+      description: 'Fork of MWS Restaurant Reviews App',
+      background_color: '#3397db',
+      theme_color: '#01579b',
+      'theme-color': '#01579b',
+      start_url: '/',
+      icons: [
+        {
+          src: path.resolve('src/icon.svg'),
+          sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+        }
+      ]
+    }),
     new WorkboxPlugin.GenerateSW({
       // these options encourage the ServiceWorkers to get in there fast
       // and not allow any straggling "old" SWs to hang around
