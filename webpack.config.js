@@ -2,6 +2,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -25,6 +26,7 @@ module.exports = {
     port: 8000
   },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       hash: false,
       title: 'Restaurant Reviews',
@@ -51,7 +53,14 @@ module.exports = {
       // these options encourage the ServiceWorkers to get in there fast
       // and not allow any straggling "old" SWs to hang around
       clientsClaim: true,
-      skipWaiting: true
+      skipWaiting: true,
+      ignoreUrlParametersMatching: [/id/],
+      runtimeCaching: [
+        {
+          urlPattern: new RegExp('http://localhost:1337/restaurants'),
+          handler: 'staleWhileRevalidate'
+        }
+      ]
     })
   ]
 };
