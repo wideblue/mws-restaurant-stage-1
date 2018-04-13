@@ -4,6 +4,7 @@ let restaurantsGlobal;
 let neighborhoodsGlobal;
 let cuisinesGlobal;
 let markersGlobal = [];
+const dataDB = new DBHelper();
 
 /**
  * Set neighborhoods HTML.
@@ -36,7 +37,7 @@ const fillCuisinesHTML = (cuisines = cuisinesGlobal) => {
  * Fetch all neighborhoods and set their HTML.
  */
 const fetchNeighborhoods = () => {
-  DBHelper.fetchNeighborhoods((error, neighborhoods) => {
+  dataDB.fetchNeighborhoods((error, neighborhoods) => {
     if (error) {
       // Got an error
       // eslint-disable-next-line no-console
@@ -52,7 +53,7 @@ const fetchNeighborhoods = () => {
  * Fetch all cuisines and set their HTML.
  */
 const fetchCuisines = () => {
-  DBHelper.fetchCuisines((error, cuisines) => {
+  dataDB.fetchCuisines((error, cuisines) => {
     if (error) {
       // Got an error!
       // eslint-disable-next-line no-console
@@ -154,7 +155,7 @@ window.updateRestaurants = () => {
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
 
-  DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
+  dataDB.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood, (error, restaurants) => {
     if (error) {
       // Got an error!
       // eslint-disable-next-line no-console

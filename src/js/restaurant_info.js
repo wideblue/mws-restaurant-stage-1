@@ -1,6 +1,7 @@
 import DBHelper from './dbhelper';
 
 let restaurantGlobal;
+const dataDB = new DBHelper();
 
 /**
  * Create review HTML and add it to the webpage.
@@ -145,7 +146,7 @@ const fetchRestaurantFromURL = callback => {
     const error = 'No restaurant id in URL';
     callback(error, null);
   } else {
-    DBHelper.fetchRestaurantById(id, (error, restaurant) => {
+    dataDB.fetchRestaurantById(id, (error, restaurant) => {
       restaurantGlobal = restaurant;
       if (!restaurant) {
         // eslint-disable-next-line no-console
