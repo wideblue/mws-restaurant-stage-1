@@ -1,6 +1,7 @@
 /**
  * Common database helper functions.
  */
+import idb from 'idb';
 
 class DBHelper {
   /**
@@ -12,12 +13,77 @@ class DBHelper {
     // Change this to your server port
     const port = 1337;
     this.DATABASE_URL = `http://localhost:${port}/restaurants`;
+
+    function createDB() {
+      if (!('indexedDB' in window)) {
+        return null;
+      }
+      return idb.open('restaurant-reviews-db', 1, upgradeDb => {
+        if (!upgradeDb.objectStoreNames.contains('RR-restaurants')) {
+          upgradeDb.createObjectStore('RR-restaurants', { keyPath: 'id' });
+        }
+      });
+    }
+
+    this.dbPromise = createDB();
   }
+
+  saveRestaurantsData(events) {
+    if (!('indexedDB' in window)) {
+      return null;
+    }
+    return this.dbPromise.then(db => {
+      const transaction = db.transaction('RR-restaurants', 'readwrite');
+      const store = transaction.objectStore('RR-restaurants');
+      return Promise.all(events.map(event => store.put(event))).catch(() => {
+        transaction.abort();
+        throw Error('Restaurants data was not stored in indexedDB');
+      });
+    });
+  }
+
+  getAllRestaurantsFromServer() {
+    return fetch(this.DATABASE_URL).then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response.json();
+    });
+  }
+
   /**
    * Fetch all restaurants.
    */
   fetchRestaurants(callback) {
-    const xhr = new XMLHttpRequest();
+    this.getAllRestaurantsFromServer()
+      .then(data => {
+        // eslint-disable-next-line no-console
+        console.log(data);
+        callback(null, data);
+        this.saveRestaurantsData(data);
+      })
+      .catch(error => {
+        // eslint-disable-next-line no-console
+        console.log(`Network has failed. Error: ${error}`);
+        if (!('indexedDB' in window)) {
+          return null;
+        }
+        return this.dbPromise
+          .then(db => {
+            const transaction = db.transaction('RR-restaurants', 'readonly');
+            const store = transaction.objectStore('RR-restaurants');
+            return store.getAll();
+          })
+          .then(data => {
+            if (!data.length) {
+              callback('Offline, no data stored localy', null);
+            } else {
+              callback(null, data);
+            }
+          });
+      });
+
+    /*  const xhr = new XMLHttpRequest();
     xhr.open('GET', this.DATABASE_URL);
     xhr.onload = () => {
       if (xhr.status === 200) {
@@ -31,7 +97,7 @@ class DBHelper {
         callback(error, null);
       }
     };
-    xhr.send();
+    xhr.send(); */
   }
 
   /**

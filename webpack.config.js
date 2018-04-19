@@ -70,13 +70,13 @@ module.exports = {
       // and not allow any straggling "old" SWs to hang around
       clientsClaim: true,
       skipWaiting: true,
-      ignoreUrlParametersMatching: [/id/],
-      runtimeCaching: [
+      ignoreUrlParametersMatching: [/id/]
+      /*  runtimeCaching: [
         {
           urlPattern: new RegExp('http://localhost:1337/restaurants'),
           handler: 'staleWhileRevalidate'
         }
-      ]
+      ] */
     })
   ]
 };
