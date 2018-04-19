@@ -223,7 +223,10 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return `/img/${restaurant.id}.jpg`;
+    if (!restaurant.photograph) {
+      return `/img/PhotoNotAvailable.jpg`;
+    }
+    return `/img/${restaurant.photograph}.jpg`;
   }
 
   /**
