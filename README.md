@@ -2,28 +2,49 @@
 ---
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
-## Project Overview: Stage 1
+## Project Overview:
 
-For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
+This is  **Restaurant Reviews** projects that is being incrementally converted from a static webpage to a mobile-ready web application during my Udacity's Mobile Web Specialist course training.
 
-### Specification
+## Installation
 
-You have been provided the code for a restaurant reviews website. The code has a lot of issues. It’s barely usable on a desktop browser, much less a mobile device. It also doesn’t include any standard accessibility features, and it doesn’t work offline at all. Your job is to update the code to resolve these issues while still maintaining the included functionality.
-
+Clone this repository and run
+```
+  npm install
+```
 
 ### Google Maps API key
 
-Obtain Google Maps API key from Google's cloud developer portal and copy it into `config.sample.js` file and rename the  to `config.js`.
+Obtain Google Maps API key from Google's cloud developer portal and copy it into `src/config.sample.js` file and rename the file to `config.js`.
 
-### What do I do from here?
+### Backend server
 
-1. In this folder, start up a simple HTTP server to serve up the site files on your local computer. Python has some simple tools to do this, and you don't even need to know Python. For most people, it's already installed on your computer.
+Application gets the data from [server](https://github.com/udacity/mws-restaurant-stage-2) that listens to requests on `http://localhost:1337`. If you are not runing the backend server on `localhost` you can change setting in `src/js/dbhelper.js`
 
-In a terminal, check the version of Python you have: `python -V`. If you have Python 2.x, spin up the server with `python -m SimpleHTTPServer 8000` (or some other port, if port 8000 is already in use.) For Python 3.x, you can use `python3 -m http.server 8000`. If you don't have Python installed, navigate to Python's [website](https://www.python.org/) to download and install the software.
+### Development server
 
-2. With your server running, visit the site: `http://localhost:8000`, and look around for a bit to see what the current experience looks like.
-3. Explore the provided code, and make start making a plan to implement the required features in three areas: responsive design, accessibility and offline use.
-4. Write code to implement the updates to get this site on its way to being a mobile-ready website.
+ During development start development server with
+ ```
+   npm run start
+  ```
+
+
+### Production build
+
+Make production build of the aplication by running
+
+ ```
+ npm run build
+ ```
+
+ The output of the build is in the `dist` folder.
+
+## TODO Stages
+
+- [x] Stage 1
+- [ ] Stage 2
+- [ ] Stage 3
+
 
 ### Note about ES6
 
