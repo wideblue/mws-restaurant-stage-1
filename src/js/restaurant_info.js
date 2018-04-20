@@ -3,6 +3,9 @@ import DBHelper from './dbhelper';
 let restaurantGlobal;
 const dataDB = new DBHelper();
 
+// register service worker
+DBHelper.registerServiceWorker();
+
 /**
  * Create review HTML and add it to the webpage.
  */

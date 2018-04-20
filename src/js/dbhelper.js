@@ -242,6 +242,29 @@ class DBHelper {
     });
     return marker;
   }
+
+  /**
+   * Register service worker.
+   */
+  static registerServiceWorker() {
+    // register service worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/service-worker.js')
+          .then(registration => {
+            // Registration was successful
+            // eslint-disable-next-line no-console
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch(err => {
+            // Registration failed :(
+            // eslint-disable-next-line no-console
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+  }
 }
 
 export default DBHelper;

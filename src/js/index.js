@@ -6,6 +6,9 @@ let cuisinesGlobal;
 let markersGlobal = [];
 const dataDB = new DBHelper();
 
+// register service worker
+DBHelper.registerServiceWorker();
+
 /**
  * Set neighborhoods HTML.
  */
@@ -190,21 +193,3 @@ document.addEventListener('DOMContentLoaded', event => {
   fetchNeighborhoods(event);
   fetchCuisines(event);
 });
-
-// register service worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/service-worker.js')
-      .then(registration => {
-        // Registration was successful
-        // eslint-disable-next-line no-console
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      })
-      .catch(err => {
-        // Registration failed :(
-        // eslint-disable-next-line no-console
-        console.log('ServiceWorker registration failed: ', err);
-      });
-  });
-}
