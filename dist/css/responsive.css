@@ -1,0 +1,75 @@
+  @media screen and (min-width: 700px) {
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+    nav h1 a {
+      font-size: 16pt;
+    }
+
+    #restaurants-list li {
+      display: flex;
+      width: calc((100% - 60px)/2);
+      margin: 15px;
+    }
+
+    #reviews-list li {
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #reviews-list .rating-card {
+      margin: 0px 20px 20px;
+    }
+
+    #restaurant-container  {
+      margin: 20px;
+    }
+
+  }
+
+  @media screen and (min-width: 1000px) {
+    nav h1 a {
+      font-size: 18pt;
+    }
+
+    #restaurants-list li {
+      width: calc((100% - 90px)/3);
+    }
+
+    #reviews-list li {
+      width: calc((100%)/2);
+      margin-left: initial;
+      margin-right: initial;
+    }
+
+  }
+
+  @media screen and (min-width: 1200px) {
+    main, .header__inner, .nav, .content {
+      width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #reviews-list li {
+      margin-left: initial;
+      margin-right: initial;
+    }
+
+    #restaurants-list {
+      padding: 15px 0px 60px;
+    }
+    #restaurants-list li {
+      width: calc((100% - 60px)/3);
+    }
+
+    #restaurants-list li:nth-child(3n+1) {
+        margin-left : 0;
+    }
+    #restaurants-list li:nth-child(3n) {
+        margin-right : 0;
+    }
+  }
