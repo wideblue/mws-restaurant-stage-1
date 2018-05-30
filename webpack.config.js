@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
@@ -19,6 +20,10 @@ module.exports = {
       {
         test: /\.html$/,
         use: [{ loader: 'html-loader', options: { minimize: true } }]
+      },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       }
     ]
   },
@@ -28,6 +33,10 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
+    new MiniCssExtractPlugin({
+      // note that styles.css is bundled only through index.js
+      filename: 'styles.css'
+    }),
     new HtmlWebpackPlugin({
       hash: false,
       title: 'Restaurant Reviews',
@@ -45,7 +54,7 @@ module.exports = {
       filename: 'restaurant.html'
     }),
     new CopyWebpackPlugin([
-      { from: './src/css/', to: 'css/' },
+      // { from: './src/css/', to: 'css/' },
       { from: './src/img/', to: 'img/' },
       // { from: './src/sw.js', to: 'sw.js' },
       { from: './src/data/', to: 'data/' }

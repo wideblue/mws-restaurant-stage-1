@@ -1,4 +1,5 @@
 import DBHelper from './dbhelper';
+import './../css/styles.css';
 
 let restaurantsGlobal;
 let neighborhoodsGlobal;
