@@ -5,6 +5,8 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const imageminMozjpeg = require('imagemin-mozjpeg');
 
 module.exports = {
   entry: {
@@ -59,6 +61,19 @@ module.exports = {
       // { from: './src/sw.js', to: 'sw.js' },
       { from: './src/data/', to: 'data/' }
     ]),
+    new ImageminPlugin({
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      jpegtran: { progressive: true }
+    }),
+    // doesnt work build time error
+    new ImageminPlugin({
+      plugins: [
+        imageminMozjpeg({
+          quality: 60,
+          progressive: true
+        })
+      ]
+    }),
     new WebpackPwaManifest({
       name: 'Restaurant Reviews',
       short_name: 'R Reviews',
