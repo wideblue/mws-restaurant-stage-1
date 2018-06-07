@@ -230,6 +230,16 @@ class DBHelper {
   }
 
   /**
+   * Restaurant image placeholder URL.
+   */
+  static imagePlaceholderUrlForRestaurant(restaurant) {
+    if (!restaurant.photograph) {
+      return `/img/placeholders/PhotoNotAvailable.jpg`;
+    }
+    return `/img/placeholders/${restaurant.photograph}.jpg`;
+  }
+
+  /**
    * Map marker for a restaurant.
    */
   static mapMarkerForRestaurant(restaurant, map) {

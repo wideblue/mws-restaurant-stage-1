@@ -96,7 +96,8 @@ const createRestaurantHTML = restaurant => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.src = DBHelper.imagePlaceholderUrlForRestaurant(restaurant);
+  image.dataset.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.alt = `${restaurant.name}'s cover photo`;
   div.append(image);
 
@@ -147,6 +148,55 @@ const fillRestaurantsHTML = (restaurants = restaurantsGlobal) => {
 };
 
 /**
+ * Intersection observer
+ */
+
+const addIntersectionObserverForImages = () => {
+  const images = document.querySelectorAll('img');
+
+  const options = {
+    // If the image gets within 50px in the Y axis, start the download.
+    root: null, // Page as root
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+
+  const fetchImage = url => {
+    console.log(url);
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = url;
+      image.onload = resolve;
+      image.onerror = reject;
+    });
+  };
+
+  const loadImage = image => {
+    const src = image.dataset.src;
+    fetchImage(src).then(() => {
+      // console.log(src)
+      image.src = src;
+    });
+  };
+
+  const handleIntersection = (entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.intersectionRatio > 0) {
+        console.log(entry.intersectionRatio);
+        loadImage(entry.target);
+      }
+    });
+  };
+
+  // The observer for the images on the page
+  const observer = new IntersectionObserver(handleIntersection, options);
+
+  images.forEach(img => {
+    observer.observe(img);
+  });
+};
+
+/**
  * Update page and map for current restaurants.
  */
 window.updateRestaurants = () => {
@@ -167,6 +217,7 @@ window.updateRestaurants = () => {
     } else {
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
+      addIntersectionObserverForImages();
     }
   });
 };

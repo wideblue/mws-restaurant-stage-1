@@ -7,6 +7,7 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 const imageminMozjpeg = require('imagemin-mozjpeg');
+const glob = require('glob');
 
 module.exports = {
   entry: {
@@ -55,6 +56,20 @@ module.exports = {
       chunks: ['restaurant', 'config'],
       filename: 'restaurant.html'
     }),
+    new ImageminPlugin({
+      // test: /\.(jpe?g|png|gif|svg)$/i,
+      plugins: [
+        imageminMozjpeg({
+          quality: 5,
+          progressive: true
+        })
+      ],
+      externalImages: {
+        context: 'src/img', // Important! This tells the plugin where to "base" the paths at
+        sources: glob.sync('src/img/*.jpg'),
+        destination: 'dist/img/placeholders'
+      }
+    }),
     new CopyWebpackPlugin([
       // { from: './src/css/', to: 'css/' },
       { from: './src/img/', to: 'img/' },
@@ -63,10 +78,6 @@ module.exports = {
     ]),
     new ImageminPlugin({
       test: /\.(jpe?g|png|gif|svg)$/i,
-      jpegtran: { progressive: true }
-    }),
-    // doesnt work build time error
-    new ImageminPlugin({
       plugins: [
         imageminMozjpeg({
           quality: 60,
