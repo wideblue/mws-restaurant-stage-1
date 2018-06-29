@@ -45,7 +45,7 @@ module.exports = {
       title: 'Restaurant Reviews',
       myPageHeader: 'Restaurant Reviews',
       template: './src/index.html',
-      chunks: ['app', 'config'],
+      chunks: ['app'],
       filename: 'index.html'
     }),
     new HtmlWebpackPlugin({
@@ -53,7 +53,7 @@ module.exports = {
       title: 'Restaurant Reviews',
       myPageHeader: 'Restaurant Details',
       template: './src/restaurant.html',
-      chunks: ['restaurant', 'config'],
+      chunks: ['restaurant'],
       filename: 'restaurant.html'
     }),
     new ImageminPlugin({

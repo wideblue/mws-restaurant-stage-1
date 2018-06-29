@@ -1,4 +1,7 @@
 import DBHelper from './dbhelper';
+import config from './../config';
+
+const loadGoogleMapsApi = require('load-google-maps-api');
 
 let restaurantGlobal;
 const dataDB = new DBHelper();
@@ -165,20 +168,47 @@ const fetchRestaurantFromURL = callback => {
 /**
  * Initialize Google map, called from HTML.
  */
-window.initMap = () => {
+
+const initMap = maps => {
+  const map = new maps.Map(document.getElementById('map'), {
+    zoom: 16,
+    center: restaurantGlobal.latlng,
+    scrollwheel: false
+  });
+  DBHelper.mapMarkerForRestaurant(restaurantGlobal, map);
+};
+
+document.addEventListener('DOMContentLoaded', event => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) {
       // Got an error!
       // eslint-disable-next-line no-console
       console.error(error);
     } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
+      restaurantGlobal = restaurant;
       fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(restaurantGlobal, self.map);
     }
   });
-};
+
+  loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
+    .then(googleMaps => {
+      initMap(googleMaps);
+
+      /* const loc = {
+    lat: 40.722216,
+    lng: -73.987501
+  };
+
+  self.map = new googleMaps.Map(document.getElementById('map'), {
+    center: loc,
+    zoom: 12,
+    scrollwheel: false
+  });
+
+  resetRestaurantsMap(restaurantsGlobal);
+  addMarkersToMap(restaurantsGlobal); */
+    })
+    .catch(error => {
+      console.error(error);
+    });
+});

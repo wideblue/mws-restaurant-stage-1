@@ -1,5 +1,8 @@
 import DBHelper from './dbhelper';
 import './../css/styles.css';
+import config from './../config';
+
+const loadGoogleMapsApi = require('load-google-maps-api');
 
 let restaurantsGlobal;
 let neighborhoodsGlobal;
@@ -72,18 +75,19 @@ const fetchCuisines = () => {
 /**
  * Clear current restaurants, their HTML and remove their map markers.
  */
-const resetRestaurants = restaurants => {
+const resetRestaurantsHTML = () => {
   // Remove all restaurants
   restaurantsGlobal = [];
   const ul = document.getElementById('restaurants-list');
   ul.innerHTML = '';
+};
 
+const resetRestaurantsMap = restaurants => {
   // Remove all map markers
   markersGlobal.forEach(m => m.setMap(null));
   markersGlobal = [];
   restaurantsGlobal = restaurants;
 };
-
 /**
  * Create restaurant HTML.
  */
@@ -125,11 +129,11 @@ const createRestaurantHTML = restaurant => {
 /**
  * Add markers for current restaurants to the map.
  */
-const addMarkersToMap = (restaurants = restaurantsGlobal) => {
+const addMarkersToMap = (restaurants = restaurantsGlobal, map) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
-    const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
-    google.maps.event.addListener(marker, 'click', () => {
+    const marker = DBHelper.mapMarkerForRestaurant(restaurant, map);
+    marker.addListener(marker, 'click', () => {
       window.location.href = marker.url;
     });
     markersGlobal.push(marker);
@@ -144,7 +148,8 @@ const fillRestaurantsHTML = (restaurants = restaurantsGlobal) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
-  addMarkersToMap();
+  restaurantsGlobal = restaurants;
+  // addMarkersToMap();
 };
 
 /**
@@ -196,8 +201,8 @@ window.updateRestaurants = () => {
       // eslint-disable-next-line no-console
       console.error(error);
     } else {
-      resetRestaurants(restaurants);
-      fillRestaurantsHTML();
+      resetRestaurantsHTML();
+      fillRestaurantsHTML(restaurants);
       addIntersectionObserverForImages();
     }
   });
@@ -206,17 +211,21 @@ window.updateRestaurants = () => {
 /**
  * Initialize Google map, called from HTML.
  */
-window.initMap = () => {
+
+const initMap = maps => {
   const loc = {
     lat: 40.722216,
     lng: -73.987501
   };
-  self.map = new google.maps.Map(document.getElementById('map'), {
+  const map = new maps.Map(document.getElementById('map'), {
     zoom: 12,
     center: loc,
     scrollwheel: false
   });
-  window.updateRestaurants();
+  // window.updateRestaurants();
+
+  resetRestaurantsMap(restaurantsGlobal);
+  addMarkersToMap(restaurantsGlobal, map);
 };
 
 /**
@@ -225,4 +234,27 @@ window.initMap = () => {
 document.addEventListener('DOMContentLoaded', event => {
   fetchNeighborhoods(event);
   fetchCuisines(event);
+  window.updateRestaurants();
+
+  loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
+    .then(googleMaps => {
+      initMap(googleMaps);
+
+      /* const loc = {
+    lat: 40.722216,
+    lng: -73.987501
+  };
+
+  self.map = new googleMaps.Map(document.getElementById('map'), {
+    center: loc,
+    zoom: 12,
+    scrollwheel: false
+  });
+
+  resetRestaurantsMap(restaurantsGlobal);
+  addMarkersToMap(restaurantsGlobal); */
+    })
+    .catch(error => {
+      console.error(error);
+    });
 });
