@@ -74,7 +74,8 @@ module.exports = {
       // { from: './src/css/', to: 'css/' },
       { from: './src/img/', to: 'img/' },
       // { from: './src/sw.js', to: 'sw.js' },
-      { from: './src/data/', to: 'data/' }
+      { from: './src/data/', to: 'data/' },
+      { from: 'GzipSimpleHTTPServer.py', to: 'GzipSimpleHTTPServer.py' }
     ]),
     new ImageminPlugin({
       test: /\.(jpe?g|png|gif|svg)$/i,
