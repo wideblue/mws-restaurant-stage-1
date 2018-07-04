@@ -153,12 +153,32 @@ const fillRestaurantsHTML = (restaurants = restaurantsGlobal) => {
 };
 
 /**
+ * Initialize Google map, called from HTML.
+ */
+
+const initMap = maps => {
+  const loc = {
+    lat: 40.722216,
+    lng: -73.987501
+  };
+  const map = new maps.Map(document.getElementById('map'), {
+    zoom: 12,
+    center: loc,
+    scrollwheel: false
+  });
+  // window.updateRestaurants();
+
+  resetRestaurantsMap(restaurantsGlobal);
+  addMarkersToMap(restaurantsGlobal, map);
+};
+
+/**
  * Intersection observer
  */
 
 const addIntersectionObserverForImages = () => {
   const images = document.querySelectorAll('[data-src]');
-  const config = {
+  const options = {
     rootMargin: '0px 0px 50px 0px',
     threshold: 0
   };
@@ -168,6 +188,7 @@ const addIntersectionObserverForImages = () => {
       if (entry.isIntersecting) {
         const img = entry.target;
         const src = img.getAttribute('data-src');
+        console.log(src);
         if (src) {
           img.src = src;
         }
@@ -175,11 +196,78 @@ const addIntersectionObserverForImages = () => {
         self.unobserve(entry.target);
       }
     });
-  }, config);
+  }, options);
 
   images.forEach(image => {
     observer.observe(image);
   });
+};
+
+const addIntersectionObserverForMap = () => {
+  const mapContainer = document.getElementById('map-container');
+  const options = {
+    rootMargin: '400px',
+    threshold: 0
+  };
+
+  const observer3 = new IntersectionObserver((entries, self) => {
+    const isIntersecting =
+      typeof entries[0].isIntersecting === 'boolean'
+        ? entries[0].isIntersecting
+        : entries[0].intersectionRatio > 0;
+    if (isIntersecting) {
+      console.log(entries[0]);
+      console.log('is intersecting');
+      loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
+        .then(googleMaps => {
+          initMap(googleMaps);
+
+          /* const loc = {
+    lat: 40.722216,
+    lng: -73.987501
+  };
+
+  self.map = new googleMaps.Map(document.getElementById('map'), {
+    center: loc,
+    zoom: 12,
+    scrollwheel: false
+  });
+
+  resetRestaurantsMap(restaurantsGlobal);
+  addMarkersToMap(restaurantsGlobal); */
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      // Stop watching and load the image
+      self.unobserve(entries[0].target);
+    }
+  }, options);
+
+  observer3.observe(mapContainer);
+};
+
+const addIntersectionObserverForBox = () => {
+  const box = document.querySelectorAll('.box');
+  const options = {
+    rootMargin: '400px',
+    threshold: 0
+  };
+
+  const observer4 = new IntersectionObserver((entries, self) => {
+    const isIntersecting =
+      typeof entries[0].isIntersecting === 'boolean'
+        ? entries[0].isIntersecting
+        : entries[0].intersectionRatio > 0;
+    if (isIntersecting) {
+      console.log(entries[0]);
+      console.log('is intersecting box');
+      // Stop watching and load the image
+      self.unobserve(entries[0].target);
+    }
+  }, options);
+
+  observer4.observe(box[0]);
 };
 
 /**
@@ -209,26 +297,6 @@ window.updateRestaurants = () => {
 };
 
 /**
- * Initialize Google map, called from HTML.
- */
-
-const initMap = maps => {
-  const loc = {
-    lat: 40.722216,
-    lng: -73.987501
-  };
-  const map = new maps.Map(document.getElementById('map'), {
-    zoom: 12,
-    center: loc,
-    scrollwheel: false
-  });
-  // window.updateRestaurants();
-
-  resetRestaurantsMap(restaurantsGlobal);
-  addMarkersToMap(restaurantsGlobal, map);
-};
-
-/**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', event => {
@@ -236,25 +304,6 @@ document.addEventListener('DOMContentLoaded', event => {
   fetchCuisines(event);
   window.updateRestaurants();
 
-  loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
-    .then(googleMaps => {
-      initMap(googleMaps);
-
-      /* const loc = {
-    lat: 40.722216,
-    lng: -73.987501
-  };
-
-  self.map = new googleMaps.Map(document.getElementById('map'), {
-    center: loc,
-    zoom: 12,
-    scrollwheel: false
-  });
-
-  resetRestaurantsMap(restaurantsGlobal);
-  addMarkersToMap(restaurantsGlobal); */
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  addIntersectionObserverForMap();
+  addIntersectionObserverForBox();
 });
