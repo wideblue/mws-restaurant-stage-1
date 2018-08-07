@@ -180,7 +180,7 @@ const addIntersectionObserverForImages = () => {
   const images = document.querySelectorAll('[data-src]');
   const options = {
     rootMargin: '0px 0px 50px 0px',
-    threshold: 0
+    threshold: 0.1
   };
 
   const observer = new IntersectionObserver((entries, self) => {
@@ -189,6 +189,7 @@ const addIntersectionObserverForImages = () => {
         const img = entry.target;
         const src = img.getAttribute('data-src');
         console.log(src);
+        // console.log(entry);
         if (src) {
           img.src = src;
         }
@@ -206,11 +207,11 @@ const addIntersectionObserverForImages = () => {
 const addIntersectionObserverForMap = () => {
   const mapContainer = document.getElementById('map-container');
   const options = {
-    rootMargin: '400px',
+    rootMargin: '0px 50px 50px 50px',
     threshold: 0
   };
 
-  const observer3 = new IntersectionObserver((entries, self) => {
+  const observer = new IntersectionObserver((entries, self) => {
     const isIntersecting =
       typeof entries[0].isIntersecting === 'boolean'
         ? entries[0].isIntersecting
@@ -244,30 +245,7 @@ const addIntersectionObserverForMap = () => {
     }
   }, options);
 
-  observer3.observe(mapContainer);
-};
-
-const addIntersectionObserverForBox = () => {
-  const box = document.querySelectorAll('.box');
-  const options = {
-    rootMargin: '400px',
-    threshold: 0
-  };
-
-  const observer4 = new IntersectionObserver((entries, self) => {
-    const isIntersecting =
-      typeof entries[0].isIntersecting === 'boolean'
-        ? entries[0].isIntersecting
-        : entries[0].intersectionRatio > 0;
-    if (isIntersecting) {
-      console.log(entries[0]);
-      console.log('is intersecting box');
-      // Stop watching and load the image
-      self.unobserve(entries[0].target);
-    }
-  }, options);
-
-  observer4.observe(box[0]);
+  observer.observe(mapContainer);
 };
 
 /**
@@ -292,6 +270,7 @@ window.updateRestaurants = () => {
       resetRestaurantsHTML();
       fillRestaurantsHTML(restaurants);
       addIntersectionObserverForImages();
+      addIntersectionObserverForMap();
     }
   });
 };
@@ -303,7 +282,4 @@ document.addEventListener('DOMContentLoaded', event => {
   fetchNeighborhoods(event);
   fetchCuisines(event);
   window.updateRestaurants();
-
-  addIntersectionObserverForMap();
-  addIntersectionObserverForBox();
 });

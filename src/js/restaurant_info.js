@@ -124,7 +124,9 @@ const fillRestaurantHTML = (restaurant = restaurantGlobal) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img';
   image.alt = `${restaurant.name}'s cover photo`;
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.src = DBHelper.imagePlaceholderUrlForRestaurant(restaurant);
+  image.dataset.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -135,6 +137,97 @@ const fillRestaurantHTML = (restaurant = restaurantGlobal) => {
   }
   // fill reviews
   fillReviewsHTML();
+};
+/**
+ * Initialize Google map, called from HTML.
+ */
+
+const initMap = maps => {
+  const map = new maps.Map(document.getElementById('map'), {
+    zoom: 16,
+    center: restaurantGlobal.latlng,
+    scrollwheel: false
+  });
+  DBHelper.mapMarkerForRestaurant(restaurantGlobal, map);
+};
+
+/**
+ * Intersection observer
+ */
+
+const addIntersectionObserverForMap = () => {
+  const mapContainer = document.getElementById('map-container');
+  const options = {
+    rootMargin: '0px 0px 0px 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries, self) => {
+    const isIntersecting =
+      typeof entries[0].isIntersecting === 'boolean'
+        ? entries[0].isIntersecting
+        : entries[0].intersectionRatio > 0;
+    if (isIntersecting) {
+      console.log(entries[0]);
+      console.log('is intersecting');
+      loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
+        .then(googleMaps => {
+          initMap(googleMaps);
+
+          /* const loc = {
+    lat: 40.722216,
+    lng: -73.987501
+  };
+
+  self.map = new googleMaps.Map(document.getElementById('map'), {
+    center: loc,
+    zoom: 12,
+    scrollwheel: false
+  });
+
+  resetRestaurantsMap(restaurantsGlobal);
+  addMarkersToMap(restaurantsGlobal); */
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      // Stop watching and load the image
+      self.unobserve(entries[0].target);
+    }
+  }, options);
+
+  observer.observe(mapContainer);
+};
+
+const addIntersectionObserverForImages = () => {
+  const images = document.querySelectorAll('[data-src]');
+  const options = {
+    rootMargin: '0px 0px 50px 0px',
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries, self) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        const src = img.getAttribute('data-src');
+        console.log(src);
+        // console.log(entry);
+        if (src) {
+          img.src = src;
+          // I can add intersection observer for the map only after image has loaded
+          // otherwise the map element is inside observation box
+          addIntersectionObserverForMap();
+        }
+        // Stop watching and load the image
+        self.unobserve(entry.target);
+      }
+    });
+  }, options);
+
+  images.forEach(image => {
+    observer.observe(image);
+  });
 };
 
 /**
@@ -160,22 +253,10 @@ const fetchRestaurantFromURL = callback => {
         return;
       }
       fillRestaurantHTML();
+      addIntersectionObserverForImages();
       callback(null, restaurant);
     });
   }
-};
-
-/**
- * Initialize Google map, called from HTML.
- */
-
-const initMap = maps => {
-  const map = new maps.Map(document.getElementById('map'), {
-    zoom: 16,
-    center: restaurantGlobal.latlng,
-    scrollwheel: false
-  });
-  DBHelper.mapMarkerForRestaurant(restaurantGlobal, map);
 };
 
 document.addEventListener('DOMContentLoaded', event => {
@@ -189,26 +270,4 @@ document.addEventListener('DOMContentLoaded', event => {
       fillBreadcrumb();
     }
   });
-
-  loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
-    .then(googleMaps => {
-      initMap(googleMaps);
-
-      /* const loc = {
-    lat: 40.722216,
-    lng: -73.987501
-  };
-
-  self.map = new googleMaps.Map(document.getElementById('map'), {
-    center: loc,
-    zoom: 12,
-    scrollwheel: false
-  });
-
-  resetRestaurantsMap(restaurantsGlobal);
-  addMarkersToMap(restaurantsGlobal); */
-    })
-    .catch(error => {
-      console.error(error);
-    });
 });
