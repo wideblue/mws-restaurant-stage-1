@@ -12,7 +12,8 @@ class DBHelper {
   constructor() {
     // Change this to your server port
     const port = 1337;
-    this.DATABASE_URL = `http://localhost:${port}/restaurants`;
+    this.SERVER_RESTAURANTS_ENDPOINT = `http://localhost:${port}/restaurants`;
+    this.SERVER_REVIEWS_ENDPOINT = `http://localhost:${port}/reviews`;
 
     function createDB() {
       if (!('indexedDB' in window)) {
@@ -28,14 +29,14 @@ class DBHelper {
     this.dbPromise = createDB();
   }
 
-  saveRestaurantsData(events) {
+  saveRestaurantsData(restaurants) {
     if (!('indexedDB' in window)) {
       return null;
     }
     return this.dbPromise.then(db => {
       const transaction = db.transaction('RR-restaurants', 'readwrite');
       const store = transaction.objectStore('RR-restaurants');
-      return Promise.all(events.map(event => store.put(event))).catch(() => {
+      return Promise.all(restaurants.map(restaurant => store.put(restaurant))).catch(() => {
         transaction.abort();
         throw Error('Restaurants data was not stored in indexedDB');
       });
@@ -43,12 +44,23 @@ class DBHelper {
   }
 
   getAllRestaurantsFromServer() {
-    return fetch(this.DATABASE_URL).then(response => {
+    return fetch(this.SERVER_RESTAURANTS_ENDPOINT).then(response => {
       if (!response.ok) {
         throw Error(response.statusText);
       }
       return response.json();
     });
+  }
+
+  getRestaurentReviewsFromServer(restaurantId) {
+    return fetch(`${this.SERVER_REVIEWS_ENDPOINT}/?restaurant_id=${restaurantId}`).then(
+      response => {
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        return response.json();
+      }
+    );
   }
 
   /**
@@ -84,7 +96,7 @@ class DBHelper {
       });
 
     /*  const xhr = new XMLHttpRequest();
-    xhr.open('GET', this.DATABASE_URL);
+    xhr.open('GET', this.SERVER_RESTAURANTS_ENDPOINT);
     xhr.onload = () => {
       if (xhr.status === 200) {
         // Got a success response from server!
@@ -112,7 +124,11 @@ class DBHelper {
         const restaurant = restaurants.find(r => r.id == id);
         if (restaurant) {
           // Got the restaurant
-          callback(null, restaurant);
+          this.getRestaurentReviewsFromServer(id).then(reviews => {
+            const restaurantWithReviews = restaurant;
+            restaurantWithReviews.reviews = reviews;
+            callback(null, restaurantWithReviews);
+          });
         } else {
           // Restaurant does not exist in the database
           callback(`Restaurant with ${id}  does not exist`, null);

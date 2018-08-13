@@ -32,7 +32,7 @@ const createReviewHTML = review => {
 
   const date = document.createElement('p');
   date.className = 'date';
-  date.innerHTML = review.date;
+  date.innerHTML = review.updatedAt;
   divHead.appendChild(date);
 
   const rating = document.createElement('p');
@@ -266,7 +266,7 @@ const addAndPostReview = e => {
   const data = {
     restaurant_id: restaurantGlobal.id,
     name: document.getElementById('reviewer_name').value,
-    rating: document.getElementById('rating').value,
+    rating: document.getElementById('rating').valueAsNumber,
     comments: document.getElementById('comment_text').value
   };
   // TODO: updateReviewsList([data]);
