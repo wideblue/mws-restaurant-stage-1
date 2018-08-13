@@ -6,6 +6,8 @@ const loadGoogleMapsApi = require('load-google-maps-api');
 let restaurantGlobal;
 const dataDB = new DBHelper();
 
+const addReviewtButton = document.getElementById('add-review-button');
+
 // register service worker
 DBHelper.registerServiceWorker();
 
@@ -216,7 +218,7 @@ const addIntersectionObserverForImages = () => {
         if (src) {
           img.src = src;
           // I can add intersection observer for the map only after image has loaded
-          // otherwise the map element is inside observation box
+          // otherwise if there is no image yet the map element is inside observation box
           addIntersectionObserverForMap();
         }
         // Stop watching and load the image
@@ -258,6 +260,29 @@ const fetchRestaurantFromURL = callback => {
     });
   }
 };
+
+const addAndPostReview = e => {
+  e.preventDefault();
+  const data = {
+    restaurant_id: restaurantGlobal.id,
+    name: document.getElementById('reviewer_name').value,
+    rating: document.getElementById('rating').value,
+    comments: document.getElementById('comment_text').value
+  };
+  // TODO: updateReviewsList([data]);
+  // saveReviewToDB([data]);
+
+  const headers = new Headers({ 'Content-Type': 'application/json' });
+  const body = JSON.stringify(data);
+  console.log(body);
+  return fetch('http://localhost:1337/reviews/', {
+    method: 'POST',
+    headers,
+    body
+  });
+};
+
+addReviewtButton.addEventListener('click', addAndPostReview);
 
 document.addEventListener('DOMContentLoaded', event => {
   fetchRestaurantFromURL((error, restaurant) => {
