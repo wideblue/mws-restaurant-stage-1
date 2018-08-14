@@ -36,7 +36,22 @@ class DBHelper {
     return this.dbPromise.then(db => {
       const transaction = db.transaction('RR-restaurants', 'readwrite');
       const store = transaction.objectStore('RR-restaurants');
-      return Promise.all(restaurants.map(restaurant => store.put(restaurant))).catch(() => {
+      return Promise.all(
+        restaurants.map(restaurant => {
+          // if I get only restaurant data with no reviews I will check if
+          // there are any reviews in indexedDB and keep them
+          if (!('reviews' in restaurant)) {
+            return store.get(restaurant.id).then(restaurantDataInDB => {
+              const updatedRestaurant = restaurant;
+              if ('reviews' in restaurantDataInDB) {
+                updatedRestaurant.reviews = restaurantDataInDB.reviews;
+              }
+              return store.put(updatedRestaurant);
+            });
+          }
+          return store.put(restaurant);
+        })
+      ).catch(() => {
         transaction.abort();
         throw Error('Restaurants data was not stored in indexedDB');
       });
@@ -123,12 +138,20 @@ class DBHelper {
       } else {
         const restaurant = restaurants.find(r => r.id == id);
         if (restaurant) {
-          // Got the restaurant
-          this.getRestaurentReviewsFromServer(id).then(reviews => {
-            const restaurantWithReviews = restaurant;
-            restaurantWithReviews.reviews = reviews;
-            callback(null, restaurantWithReviews);
-          });
+          // Got the restaurant I will try to get also the rewiews
+          // if I get them I will save them
+          this.getRestaurentReviewsFromServer(id)
+            .then(reviews => {
+              const restaurantWithReviews = restaurant;
+              restaurantWithReviews.reviews = reviews;
+              this.saveRestaurantsData([restaurantWithReviews]).then(() =>
+                console.log('Reviews saved')
+              );
+              callback(null, restaurantWithReviews);
+            })
+            .catch(() => {
+              callback(null, restaurant);
+            });
         } else {
           // Restaurant does not exist in the database
           callback(`Restaurant with ${id}  does not exist`, null);
