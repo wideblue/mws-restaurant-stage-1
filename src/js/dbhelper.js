@@ -43,16 +43,19 @@ class DBHelper {
           if (!('reviews' in restaurant)) {
             return store.get(restaurant.id).then(restaurantDataInDB => {
               const updatedRestaurant = restaurant;
-              if ('reviews' in restaurantDataInDB) {
-                updatedRestaurant.reviews = restaurantDataInDB.reviews;
+              if (restaurantDataInDB) {
+                if ('reviews' in restaurantDataInDB) {
+                  updatedRestaurant.reviews = restaurantDataInDB.reviews;
+                }
               }
               return store.put(updatedRestaurant);
             });
           }
           return store.put(restaurant);
         })
-      ).catch(() => {
+      ).catch(e => {
         transaction.abort();
+        console.log(e);
         throw Error('Restaurants data was not stored in indexedDB');
       });
     });
