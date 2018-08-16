@@ -284,6 +284,27 @@ const addAndPostReview = e => {
 
 addReviewtButton.addEventListener('click', addAndPostReview);
 
+/**
+ *Receiving message from service worker and showing notification to user:
+ */
+
+const channel = new BroadcastChannel('sw-messages');
+channel.addEventListener('message', event => {
+  console.log(event);
+  // Get the snackbar DIV
+  const notificationDiv = document.getElementById('notification');
+  notificationDiv.innerText =
+    'The network or the server seems to be down, we will resend your review when we are back online';
+
+  // Add the "show" class to DIV
+  notificationDiv.className = 'show';
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(() => {
+    notificationDiv.className = notificationDiv.className.replace('show', '');
+  }, 3000);
+});
+
 document.addEventListener('DOMContentLoaded', event => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) {
