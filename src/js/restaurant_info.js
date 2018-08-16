@@ -7,6 +7,7 @@ let restaurantGlobal;
 const dataDB = new DBHelper();
 
 const addReviewtButton = document.getElementById('add-review-button');
+const favoriteToggleButton = document.getElementById('favorite-toggle');
 
 // register service worker
 DBHelper.registerServiceWorker();
@@ -137,6 +138,12 @@ const fillRestaurantHTML = (restaurant = restaurantGlobal) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
+
+  // if favorite
+  if (restaurant.is_favorite) {
+    favoriteToggleButton.checked = restaurant.is_favorite;
+  }
+
   // fill reviews
   fillReviewsHTML();
 };
@@ -261,8 +268,8 @@ const fetchRestaurantFromURL = callback => {
   }
 };
 
-const addAndPostReview = e => {
-  e.preventDefault();
+const addAndPostReview = event => {
+  event.preventDefault();
   const data = {
     restaurant_id: restaurantGlobal.id,
     name: document.getElementById('reviewer_name').value,
@@ -283,6 +290,22 @@ const addAndPostReview = e => {
 };
 
 addReviewtButton.addEventListener('click', addAndPostReview);
+
+const changeFavorite = () => {
+  let isFavorite = false;
+  if (favoriteToggleButton.checked === true) {
+    console.log('favorite checked');
+    isFavorite = true;
+  }
+  return fetch(
+    `http://localhost:1337/restaurants/${restaurantGlobal.id}/?is_favorite=${isFavorite}`,
+    {
+      method: 'POST'
+    }
+  );
+};
+
+favoriteToggleButton.addEventListener('change', changeFavorite);
 
 /**
  *Receiving message from service worker and showing notification to user:
