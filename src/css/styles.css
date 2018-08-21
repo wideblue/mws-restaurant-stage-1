@@ -136,7 +136,7 @@ nav h1 a {
 #breadcrumb {
     padding: 10px 40px 16px;
     list-style: none;
-   /* background-color: #eee; */
+    /* background-color: #eee; */
     font-size: 14pt;
     margin: 0;
     /*width: calc(50% - 80px);*/
@@ -448,57 +448,95 @@ nav h1 a {
     color: #666;
 }
 
-
 /* ====================== Sync notification ====================== */
+
 /* css is from https://www.w3schools.com/howto/howto_js_snackbar.asp*/
 
 /* The snackbar - position it at the bottom and in the middle of the screen */
+
 #notification {
-    visibility: hidden; /* Hidden by default. Visible on click */
-    min-width: 250px; /* Set a default minimum width */
-    margin-left: -125px; /* Divide value of min-width by 2 */
-    background-color: #333; /* Black background color */
-    color: #fff; /* White text color */
-    text-align: center; /* Centered text */
-    border-radius: 2px; /* Rounded borders */
-    padding: 16px; /* Padding */
-    position: fixed; /* Sit on top of the screen */
-    z-index: 1; /* Add a z-index if needed */
-    left: 50%; /* Center the snackbar */
-    bottom: 30px; /* 30px from the bottom */
+    visibility: hidden;
+    /* Hidden by default. Visible on click */
+    min-width: 250px;
+    /* Set a default minimum width */
+    margin-left: -125px;
+    /* Divide value of min-width by 2 */
+    background-color: #333;
+    /* Black background color */
+    color: #fff;
+    /* White text color */
+    text-align: center;
+    /* Centered text */
+    border-radius: 2px;
+    /* Rounded borders */
+    padding: 16px;
+    /* Padding */
+    position: fixed;
+    /* Sit on top of the screen */
+    z-index: 1;
+    /* Add a z-index if needed */
+    left: 50%;
+    /* Center the snackbar */
+    bottom: 30px;
+    /* 30px from the bottom */
 }
 
 /* Show the snackbar when clicking on a button (class added with JavaScript) */
-#notification.show {
-    visibility: visible; /* Show the snackbar */
 
-/* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+#notification.show {
+    visibility: visible;
+    /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
 However, delay the fade out process for 2.5 seconds */
     -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
     animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
 /* Animations to fade the snackbar in and out */
+
 @-webkit-keyframes fadein {
-    from {bottom: 0; opacity: 0;}
-    to {bottom: 30px; opacity: 1;}
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
 }
 
 @keyframes fadein {
-    from {bottom: 0; opacity: 0;}
-    to {bottom: 30px; opacity: 1;}
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
 }
 
 @-webkit-keyframes fadeout {
-    from {bottom: 30px; opacity: 1;}
-    to {bottom: 0; opacity: 0;}
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
 }
 
 @keyframes fadeout {
-    from {bottom: 30px; opacity: 1;}
-    to {bottom: 0; opacity: 0;}
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
 }
-
 
 /* ====================== favorites toggle ====================== */
 
@@ -506,40 +544,180 @@ However, delay the fade out process for 2.5 seconds */
 
 label input[type="checkbox"] {
     display: none;
-  }
+}
 
-  .custom-checkbox {
+.custom-checkbox {
     margin-left: 2em;
     position: relative;
     cursor: pointer;
-  }
+}
 
-  .custom-checkbox .glyphicon {
+.custom-checkbox .glyphicon {
     color: gold;
     position: absolute;
     top: 0.4em;
     left: -1.25em;
     font-size: 0.75em;
-  }
+}
 
-  .custom-checkbox .glyphicon-star-empty {
+.custom-checkbox .glyphicon-star-empty {
     color: gray;
-  }
+}
 
-  .custom-checkbox .glyphicon-star {
+.custom-checkbox .glyphicon-star {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
-  }
+}
 
-  .custom-checkbox:hover .glyphicon-star{
+.custom-checkbox:hover .glyphicon-star {
     opacity: 0.5;
-  }
+}
 
-  .custom-checkbox input[type="checkbox"]:checked ~ .glyphicon-star {
+.custom-checkbox input[type="checkbox"]:checked~.glyphicon-star {
     opacity: 1;
+}
+
+/* ====================== form ====================== */
+.card {
+    background-color: #fff;
+    box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
+    display: flex;
+    flex-flow: row wrap;
+    margin: 5px 20px;
+    padding: 0;
+    width: 90%;
   }
 
+form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
 
+.form-section {
+    color: red;
+    display: flex;
+    justify-content: center;
+}
+
+.card-title {
+    align-items: center;
+    background-color: #04a9f4;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    line-height: normal;
+    padding: 0 16px;
+    width: 100%;
+  }
+
+  .card-text {
+    color: #616161;
+    flex-grow: 1;
+    font-size: 1rem;
+    height: auto;
+    line-height: 18px;
+    margin: 16px;
+    overflow: hidden;
+    padding: 16px;
+    width: 90%;
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    color: #757575;
+    display: block;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 4px 0;
+    width: 100%;
+  }
+
+  .support-text {
+    color: rgba(0,0,0,.54);
+    font-size: 1rem;
+    line-height: 18px;
+    overflow: hidden;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .textfield {
+    display: flex;
+    flex-wrap: wrap;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18px;
+    margin: 0;
+    max-width: 90%;
+    min-width: 80%;
+    padding: 10px 0;
+  }
+
+  .card-action {
+    align-items: center;
+    background-color: transparent;
+    border-top: 1px solid #e0e0e0;
+    color: inherit;
+    display: flex;
+    font-size: 16px;
+    height: auto;
+    justify-content: center;
+    margin-top: 10px;
+    margin: 0;
+    padding: 4px 0;
+    width: 100%;
+  }
+
+  .button {
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 36px;
+    letter-spacing: 0;
+    line-height: 36px;
+    margin: 2px;
+    min-width: 64px;
+    outline: none;
+    overflow: hidden;
+    padding: 0 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
+    vertical-align: middle;
+    width: 30%;
+    will-change: box-shadow;
+  }
+
+  .button::after {
+    background: rgba(255, 255, 255, .5);
+    border-radius: 100%;
+    content: '';
+    height: 5px;
+    left: 50%;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    transform-origin: 50% 50%;
+    transform: scale(1, 1) translate(-50%);
+    width: 5px;
+  }
+
+  .raised {
+    background: rgb(3, 169, 244);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    color: #fff;
+  }
 
 /* ====================== responsive.css ====================== */
 

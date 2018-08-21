@@ -33,7 +33,7 @@ const createReviewHTML = review => {
 
   const date = document.createElement('p');
   date.className = 'date';
-  date.innerHTML = review.updatedAt;
+  date.innerHTML = review.createdAt;
   divHead.appendChild(date);
 
   const rating = document.createElement('p');
@@ -270,17 +270,28 @@ const fetchRestaurantFromURL = callback => {
 
 const addAndPostReview = event => {
   event.preventDefault();
-  const data = {
+  const review = {
     restaurant_id: restaurantGlobal.id,
     name: document.getElementById('reviewer_name').value,
     rating: document.getElementById('rating').valueAsNumber,
     comments: document.getElementById('comment_text').value
   };
-  // TODO: updateReviewsList([data]);
-  // saveReviewToDB([data]);
+
+  review.createdAt = Date.now();
+  if (restaurantGlobal.reviews) {
+    restaurantGlobal.reviews.push(review);
+  } else {
+    restaurantGlobal.reviews = [review];
+  }
+
+  // updating local review
+  dataDB.saveRestaurantsData([restaurantGlobal]);
+  // update UI
+  const ul = document.getElementById('reviews-list');
+  ul.appendChild(createReviewHTML(review));
 
   const headers = new Headers({ 'Content-Type': 'application/json' });
-  const body = JSON.stringify(data);
+  const body = JSON.stringify(review);
   console.log(body);
   return fetch('http://localhost:1337/reviews/', {
     method: 'POST',
@@ -297,6 +308,11 @@ const changeFavorite = () => {
     console.log('favorite checked');
     isFavorite = true;
   }
+
+  restaurantGlobal.is_favorite = isFavorite;
+  // updating local data
+  dataDB.saveRestaurantsData([restaurantGlobal]);
+
   return fetch(
     `http://localhost:1337/restaurants/${restaurantGlobal.id}/?is_favorite=${isFavorite}`,
     {
@@ -314,11 +330,18 @@ favoriteToggleButton.addEventListener('change', changeFavorite);
 const channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
   console.log(event);
+  // what kind request failed
+  const splitUrl = event.data.url.split('/');
+  console.log(splitUrl[3]);
   // Get the snackbar DIV
   const notificationDiv = document.getElementById('notification');
-  notificationDiv.innerText =
-    'The network or the server seems to be down, we will resend your review when we are back online';
-
+  if (splitUrl[3] === 'reviews') {
+    notificationDiv.innerText =
+      'The network or the server seems to be down, we will resend your review when we are back online';
+  } else {
+    notificationDiv.innerText =
+      'The network or the server seems to be down, we will resend your choice when we are back online';
+  }
   // Add the "show" class to DIV
   notificationDiv.className = 'show';
 

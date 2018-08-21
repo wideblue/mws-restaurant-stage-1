@@ -58,34 +58,42 @@
       </section>
       <!-- end restaurant -->
       <!-- Beginning reviews -->
-      <section id="reviews-container">
 
-       <label for="favorite-toggle" class="custom-checkbox">
+      <section class="form-section">
+      <div class="rating-card">
+      <label for="favorite-toggle" class="custom-checkbox">
         <input type="checkbox" id="favorite-toggle"/>
         <div class="glyphicon glyphicon-star-empty">☆</div>
         <div class="glyphicon glyphicon-star">★</div>
         Favorite restaurant
        </label>
-
+       <div class="card-title">
+          <h2>Add an Event</h2>
+        </div>
+ <div class="support-text">
        <form action="#" method="post">
-            <div>
+            <div class="textfield">
               <label for="reviewer_name">Name</label>
               <input id="reviewer_name" name="reviewer_name"/>
             </div>
-            <div>
+            <div class="textfield">
               <label for="rating">Rating</label>
               <input id="rating" name="rating" type="number" min="0" max="5" step="1" value="5"/>
             </div>
-            <div>
+            <div class="textfield">
               <label for="comment_text">Comment</label>
               <input id="comment_text" name="comment_text"/>
             </div>
-            <div>
-              <button id="add-review-button" type="submit">
+            <div  class="card-action">
+              <button id="add-review-button" type="submit"  class="raised button ripple">
                 Add review
               </button>
             </div>
           </form>
+          </div>
+          </div>
+      </section>
+      <section id="reviews-container">
         <ul id="reviews-list"></ul>
       </section>
       <!-- End reviews -->

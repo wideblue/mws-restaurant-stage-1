@@ -44,3 +44,11 @@ workbox.routing.registerRoute(
   }),
   'POST'
 );
+
+workbox.routing.registerRoute(
+  new RegExp('http://localhost:1337/restaurants/.*'),
+  new workbox.strategies.NetworkOnly({
+    plugins: [backgroundSyncPlugin]
+  }),
+  'POST'
+);
