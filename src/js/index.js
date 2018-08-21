@@ -105,6 +105,12 @@ const createRestaurantHTML = restaurant => {
   image.alt = `${restaurant.name}'s cover photo`;
   div.append(image);
 
+  if (restaurant.is_favorite) {
+    const favoritDiv = document.createElement('div');
+    favoritDiv.className = 'topright';
+    favoritDiv.innerHTML = '★';
+    div.append(favoritDiv);
+  }
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   div.append(name);

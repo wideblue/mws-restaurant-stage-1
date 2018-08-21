@@ -253,6 +253,7 @@ nav h1 a {
     background: #fff;
     text-align: center;
     border-radius: 3px;
+    position: relative;
 }
 
 #restaurants-list .restaurant-img {
@@ -577,6 +578,22 @@ label input[type="checkbox"] {
     opacity: 1;
 }
 
+.topright {
+    color: #f58500;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 26px;
+    background-color: #fff;
+    border-radius: 3px;
+    border: none;
+    padding: 1px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+
+
+}
 /* ====================== form ====================== */
 .card {
     background-color: #fff;

@@ -33,7 +33,12 @@ const createReviewHTML = review => {
 
   const date = document.createElement('p');
   date.className = 'date';
-  date.innerHTML = review.createdAt;
+  const createdAt = new Date(review.createdAt);
+  date.innerHTML = createdAt.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
   divHead.appendChild(date);
 
   const rating = document.createElement('p');
@@ -100,14 +105,15 @@ const fillReviewsHTML = (reviews = restaurantGlobal.reviews) => {
   const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
+  const ul = document.getElementById('reviews-list');
 
   if (!reviews) {
+    container.appendChild(ul);
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
     container.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
