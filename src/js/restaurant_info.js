@@ -8,6 +8,7 @@ const dataDB = new DBHelper();
 
 const addReviewtButton = document.getElementById('add-review-button');
 const favoriteToggleButton = document.getElementById('favorite-toggle');
+const favoriteToggleText = document.getElementById('favorite-text');
 
 // register service worker
 DBHelper.registerServiceWorker();
@@ -146,8 +147,12 @@ const fillRestaurantHTML = (restaurant = restaurantGlobal) => {
   }
 
   // if favorite
-  if (restaurant.is_favorite) {
+  favoriteToggleButton.setAttribute('aria-label', `Toggle favorite status of ${restaurant.name}`);
+
+  if (restaurant.is_favorite === true || restaurant.is_favorite === 'true') {
     favoriteToggleButton.checked = restaurant.is_favorite;
+    favoriteToggleButton.setAttribute('aria-checked', true);
+    favoriteToggleText.innerText = 'UNFAVORITE THIS';
   }
 
   // fill reviews
@@ -183,8 +188,6 @@ const addIntersectionObserverForMap = () => {
         ? entries[0].isIntersecting
         : entries[0].intersectionRatio > 0;
     if (isIntersecting) {
-      console.log(entries[0]);
-      console.log('is intersecting');
       loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
         .then(googleMaps => {
           initMap(googleMaps);
@@ -204,6 +207,7 @@ const addIntersectionObserverForMap = () => {
   addMarkersToMap(restaurantsGlobal); */
         })
         .catch(error => {
+          // eslint-disable-next-line no-console
           console.error(error);
         });
       // Stop watching and load the image
@@ -226,7 +230,6 @@ const addIntersectionObserverForImages = () => {
       if (entry.isIntersecting) {
         const img = entry.target;
         const src = img.getAttribute('data-src');
-        console.log(src);
         // console.log(entry);
         if (src) {
           img.src = src;
@@ -295,10 +298,10 @@ const addAndPostReview = event => {
   // update UI
   const ul = document.getElementById('reviews-list');
   ul.appendChild(createReviewHTML(review));
+  document.getElementById('submit-review').reset();
 
   const headers = new Headers({ 'Content-Type': 'application/json' });
   const body = JSON.stringify(review);
-  console.log(body);
   return fetch('http://localhost:1337/reviews/', {
     method: 'POST',
     headers,
@@ -311,10 +314,13 @@ addReviewtButton.addEventListener('click', addAndPostReview);
 const changeFavorite = () => {
   let isFavorite = false;
   if (favoriteToggleButton.checked === true) {
-    console.log('favorite checked');
     isFavorite = true;
+    favoriteToggleText.innerText = 'UNFAVORITE THIS';
+    favoriteToggleButton.setAttribute('aria-checked', true);
+  } else {
+    favoriteToggleText.innerText = 'FAVORITE THIS';
+    favoriteToggleButton.setAttribute('aria-checked', false);
   }
-
   restaurantGlobal.is_favorite = isFavorite;
   // updating local data
   dataDB.saveRestaurantsData([restaurantGlobal]);
@@ -322,7 +328,7 @@ const changeFavorite = () => {
   return fetch(
     `http://localhost:1337/restaurants/${restaurantGlobal.id}/?is_favorite=${isFavorite}`,
     {
-      method: 'POST'
+      method: 'PUT'
     }
   );
 };
@@ -335,10 +341,11 @@ favoriteToggleButton.addEventListener('change', changeFavorite);
 
 const channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
+  // eslint-disable-next-line no-console
   console.log(event);
   // what kind request failed
   const splitUrl = event.data.url.split('/');
-  console.log(splitUrl[3]);
+
   // Get the snackbar DIV
   const notificationDiv = document.getElementById('notification');
   if (splitUrl[3] === 'reviews') {

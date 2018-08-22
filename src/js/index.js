@@ -105,7 +105,9 @@ const createRestaurantHTML = restaurant => {
   image.alt = `${restaurant.name}'s cover photo`;
   div.append(image);
 
-  if (restaurant.is_favorite) {
+  // because of server bug, server returnes true or 'true'
+
+  if (restaurant.is_favorite === true || restaurant.is_favorite === 'true') {
     const favoritDiv = document.createElement('div');
     favoritDiv.className = 'topright';
     favoritDiv.innerHTML = '★';
@@ -194,7 +196,7 @@ const addIntersectionObserverForImages = () => {
       if (entry.isIntersecting) {
         const img = entry.target;
         const src = img.getAttribute('data-src');
-        console.log(src);
+
         // console.log(entry);
         if (src) {
           img.src = src;
@@ -223,8 +225,6 @@ const addIntersectionObserverForMap = () => {
         ? entries[0].isIntersecting
         : entries[0].intersectionRatio > 0;
     if (isIntersecting) {
-      console.log(entries[0]);
-      console.log('is intersecting');
       loadGoogleMapsApi({ key: config.GOOGLE_MAPS_API_KEY })
         .then(googleMaps => {
           initMap(googleMaps);
@@ -244,6 +244,7 @@ const addIntersectionObserverForMap = () => {
   addMarkersToMap(restaurantsGlobal); */
         })
         .catch(error => {
+          // eslint-disable-next-line no-console
           console.error(error);
         });
       // Stop watching and load the image

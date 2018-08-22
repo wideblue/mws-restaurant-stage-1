@@ -55,6 +55,7 @@ class DBHelper {
         })
       ).catch(e => {
         transaction.abort();
+        // eslint-disable-next-line no-console
         console.log(e);
         throw Error('Restaurants data was not stored in indexedDB');
       });
@@ -148,6 +149,7 @@ class DBHelper {
               const restaurantWithReviews = restaurant;
               restaurantWithReviews.reviews = reviews;
               this.saveRestaurantsData([restaurantWithReviews]).then(() =>
+                // eslint-disable-next-line no-console
                 console.log('Reviews saved')
               );
               callback(null, restaurantWithReviews);

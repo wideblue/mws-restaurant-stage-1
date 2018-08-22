@@ -47,7 +47,16 @@
       <section id="restaurant-container" tabindex="-1">
         <div id="restaurant-tail">
           <h2 id="restaurant-name"></h2>
+          <div class='img-container'>
           <img id="restaurant-img">
+          <label for="favorite-toggle" class="custom-checkbox">
+        <input type="checkbox" id="favorite-toggle" aria-checked="false"/>
+        <div class="staricon empty-star">☆ </div>
+        <div class="staricon star">★</div>
+        <div id='favorite-text'>FAVORITE THIS</div>
+
+       </label>
+       </div>
           <p id="restaurant-cuisine"></p>
         </div>
         <p id="restaurant-address"></p>
@@ -58,48 +67,43 @@
       </section>
       <!-- end restaurant -->
       <!-- Beginning reviews -->
+      <section id="reviews-container">
+        <ul id="reviews-list">
+        <li>
+        <div class="rating-card">
 
-      <section class="form-section">
-      <div class="rating-card">
-      <label for="favorite-toggle" class="custom-checkbox">
-        <input type="checkbox" id="favorite-toggle"/>
-        <div class="glyphicon glyphicon-star-empty">☆</div>
-        <div class="glyphicon glyphicon-star">★</div>
-        Favorite restaurant
-       </label>
        <div class="card-title">
-          <h2>Add an Event</h2>
+          <h4>write a review</h4>
         </div>
  <div class="support-text">
-       <form action="#" method="post">
+       <form id='submit-review' action="#" method="post" aria-label="Write a review">
             <div class="textfield">
               <label for="reviewer_name">Name</label>
-              <input id="reviewer_name" name="reviewer_name"/>
+              <input id="reviewer_name" name="reviewer_name" aria-label="Enter your name" required/>
             </div>
             <div class="textfield">
               <label for="rating">Rating</label>
-              <input id="rating" name="rating" type="number" min="0" max="5" step="1" value="5"/>
+              <input id="rating" name="rating" type="number" min="0" max="5" step="1" value="5" aria-label="Rate the restaurant"/>
             </div>
             <div class="textfield">
               <label for="comment_text">Comment</label>
-              <input id="comment_text" name="comment_text"/>
+              <textarea rows="4" id="comment_text" name="comment_text" required aria-label="Enter your comments"> </textarea>
             </div>
             <div  class="card-action">
-              <button id="add-review-button" type="submit"  class="raised button ripple">
+              <button id="add-review-button" type="submit"  class="raised button">
                 Add review
               </button>
             </div>
           </form>
           </div>
           </div>
-      </section>
-      <section id="reviews-container">
-        <ul id="reviews-list"></ul>
+        </li>
+        </ul>
       </section>
       <!-- End reviews -->
     </section>
     <!-- The actual snackbar -->
-   <div id="notification"></div>
+   <div id="notification" role="alert" aria-label="Important mstariconessage"></div>
   </main>
   <!-- End main -->
 

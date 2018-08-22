@@ -50,5 +50,5 @@ workbox.routing.registerRoute(
   new workbox.strategies.NetworkOnly({
     plugins: [backgroundSyncPlugin]
   }),
-  'POST'
+  'PUT'
 );

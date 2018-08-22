@@ -382,6 +382,7 @@ nav h1 a {
 
 #reviews-container li {
     display: flex;
+    width: 100%;
 }
 
 #reviews-list {
@@ -398,6 +399,7 @@ nav h1 a {
     text-align: center;
     margin: 0px 0px 20px;
     position: relative;
+    width: 100%;
 }
 
 .rating-card-published {
@@ -541,40 +543,46 @@ However, delay the fade out process for 2.5 seconds */
 
 /* ====================== favorites toggle ====================== */
 
-/* Required Styling */
+.img-container {
+    position: relative;
+}
 
 label input[type="checkbox"] {
     display: none;
 }
 
 .custom-checkbox {
-    margin-left: 2em;
-    position: relative;
-    cursor: pointer;
-}
-
-.custom-checkbox .glyphicon {
-    color: gold;
     position: absolute;
-    top: 0.4em;
-    left: -1.25em;
-    font-size: 0.75em;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 7px 10px 7px 40px;
 }
 
-.custom-checkbox .glyphicon-star-empty {
+.custom-checkbox .staricon {
+    color: #f58500;
+    position: absolute;
+    top: -3px;
+    left: 5px;
+    font-size: 1.7em;
+}
+
+.custom-checkbox .empty-star {
     color: gray;
 }
 
-.custom-checkbox .glyphicon-star {
+.custom-checkbox .star {
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
 }
 
-.custom-checkbox:hover .glyphicon-star {
+.custom-checkbox:hover .star {
     opacity: 0.5;
 }
 
-.custom-checkbox input[type="checkbox"]:checked~.glyphicon-star {
+.custom-checkbox input[type="checkbox"]:checked~.star {
     opacity: 1;
 }
 
@@ -591,19 +599,19 @@ label input[type="checkbox"] {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-
-
 }
+
 /* ====================== form ====================== */
+
 .card {
     background-color: #fff;
-    box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12), 0 3px 5px -1px rgba(0, 0, 0, .2);
     display: flex;
     flex-flow: row wrap;
     margin: 5px 20px;
     padding: 0;
     width: 90%;
-  }
+}
 
 form {
     display: flex;
@@ -620,16 +628,24 @@ form {
 
 .card-title {
     align-items: center;
-    background-color: #04a9f4;
+    background-color: #3397DB;
+    border-radius: 3px 3px 0px 0px;
     color: #fff;
     display: flex;
     justify-content: center;
     line-height: normal;
-    padding: 0 16px;
     width: 100%;
-  }
+}
 
-  .card-text {
+.card-title h4 {
+    color: #fff;
+    font-size: 16pt;
+    font-weight: 300;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 20px 0px 4px;
+}
+.card-text {
     color: #616161;
     flex-grow: 1;
     font-size: 1rem;
@@ -639,33 +655,34 @@ form {
     overflow: hidden;
     padding: 16px;
     width: 90%;
-  }
+}
 
-  input {
+input,
+textarea {
     border: none;
     border-bottom: 1px solid #e0e0e0;
     color: #757575;
     display: block;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 16px;
     margin: 0;
     padding: 4px 0;
     width: 100%;
-  }
+}
 
-  .support-text {
-    color: rgba(0,0,0,.54);
+.support-text {
+    color: rgba(0, 0, 0, .54);
     font-size: 1rem;
     line-height: 18px;
     overflow: hidden;
     padding: 10px;
     width: 100%;
-  }
+}
 
-  .textfield {
+.textfield {
     display: flex;
     flex-wrap: wrap;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 16px;
     font-weight: 400;
     line-height: 18px;
@@ -673,9 +690,9 @@ form {
     max-width: 90%;
     min-width: 80%;
     padding: 10px 0;
-  }
+}
 
-  .card-action {
+.card-action {
     align-items: center;
     background-color: transparent;
     border-top: 1px solid #e0e0e0;
@@ -688,14 +705,14 @@ form {
     margin: 0;
     padding: 4px 0;
     width: 100%;
-  }
+}
 
-  .button {
+.button {
     border-radius: 2px;
     border: none;
     cursor: pointer;
     display: inline-block;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     font-size: 14px;
     font-weight: 500;
     height: 36px;
@@ -710,13 +727,13 @@ form {
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
-    transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
+    transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
     vertical-align: middle;
     width: 30%;
     will-change: box-shadow;
-  }
+}
 
-  .button::after {
+.button::after {
     background: rgba(255, 255, 255, .5);
     border-radius: 100%;
     content: '';
@@ -728,13 +745,13 @@ form {
     transform-origin: 50% 50%;
     transform: scale(1, 1) translate(-50%);
     width: 5px;
-  }
+}
 
-  .raised {
-    background: rgb(3, 169, 244);
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+.raised {
+    background: #3397DB;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .14), 0 3px 1px -2px rgba(0, 0, 0, .2), 0 1px 5px 0 rgba(0, 0, 0, .12);
     color: #fff;
-  }
+}
 
 /* ====================== responsive.css ====================== */
 
