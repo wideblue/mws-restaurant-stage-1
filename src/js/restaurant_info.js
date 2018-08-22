@@ -302,7 +302,7 @@ const addAndPostReview = event => {
 
   const headers = new Headers({ 'Content-Type': 'application/json' });
   const body = JSON.stringify(review);
-  return fetch('http://localhost:1337/reviews/', {
+  return fetch(`${dataDB.SERVER_REVIEWS_ENDPOINT}/`, {
     method: 'POST',
     headers,
     body
@@ -326,7 +326,7 @@ const changeFavorite = () => {
   dataDB.saveRestaurantsData([restaurantGlobal]);
 
   return fetch(
-    `http://localhost:1337/restaurants/${restaurantGlobal.id}/?is_favorite=${isFavorite}`,
+    `${dataDB.SERVER_RESTAURANTS_ENDPOINT}/${restaurantGlobal.id}/?is_favorite=${isFavorite}`,
     {
       method: 'PUT'
     }
