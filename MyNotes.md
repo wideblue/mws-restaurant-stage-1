@@ -1,5 +1,64 @@
+## Corriculum
+### Stage 1
 
-This might come usefull
+* Why Responsive?
+* Starting Small
+* Building Up
+* Common Responsive Patterns
+* Optimizations
+* Getting Up and Running
+* Units, Formats, Environments
+* Images with Markup
+* Full Responsiveness
+* Accessibility Over 
+* Focus
+* Semantics Basics
+* Navigating Content
+* ARIA
+* Style
+* The Benefits of Offline First
+* Introducing the Service Worker
+* project
+
+ ### Stage 2 
+
+* Ajax with XHR
+* Ajax with jQuery
+* Ajax with Fetch
+* Syntax
+* Functions
+* Built-ins
+* Professional Developer-fu
+* IndexedDB and Caching
+* Introducing Web Tooling and Automation
+* Productive Editing
+* Powerful Builds
+* Expressive Live Editing
+* How to Prevent Disasters
+* Awesome Optimizations
+* Web Tooling and Automation Conclusion
+* Restaurant Reiews App—Stage 2
+
+ ### Stage 3
+
+*  HTTP's Request/Response Cycle
+*  HTTP/1
+*  HTTPS
+*  HTTP/2
+*  Security
+*  Requests & Responses
+*  The Web from Python
+*  HTTP in the Real World
+*  The Critical Rendering Path
+*  App Lifecycles
+*  Weapons of Jank Destruction
+*  JavaScript
+*  Styles and Layout
+*  Compositing and Painting
+*  Restaurant Reviews App—Stage 3
+
+
+## This might come usefull
 
 Note that styles.css is bundled only through index.js and not throughe restaurant_info.js because we use the same css file for both. Because of that styles.css is linked in restaurant.html templete file.
 
